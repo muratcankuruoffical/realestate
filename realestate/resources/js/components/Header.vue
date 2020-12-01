@@ -7,9 +7,12 @@
                         <a href="" class="nav-link">TEST</a>
                     </li>
                 </ul>
-                <div class="text-right">
-                    <button class="btn btn-primary">Login</button>
-                    <button class="btn btn-primary">Register</button>
+                <div class="text-right" v-if="$store.getters.isAuth">
+                    <button class="btn btn-primary" @click="logout">Çıkış Yap</button>
+                </div>
+                <div class="text-right" v-else>
+                    <router-link :to="{ name : 'login' }" class="btn btn-primary">Login</router-link>
+                    <router-link :to="{ name : 'register' }" class="btn btn-primary">Register</router-link>
                 </div>
             </div>
         </nav>
@@ -18,7 +21,12 @@
 
 <script>
 export default {
-name: "Header"
+    name: "Header",
+    methods : {
+        logout() {
+             this.$store.dispatch('logout');
+        }
+    }
 }
 </script>
 

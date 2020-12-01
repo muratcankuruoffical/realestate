@@ -38,13 +38,9 @@ export default {
     },
     methods : {
         setData() {
-            axios.post("http://127.0.0.1:8000/api/login", this.user)
+            this.$store.dispatch("login", this.user)
             .then(response => {
-                if (response.data.token) {
-                    this.$router.push({ name : 'home' })
-                }
-                //this.$router.push({ name : 'home' })
-                console.log(response.data)
+                this.$router.push({ name : 'home' })
             })
         }
     }
