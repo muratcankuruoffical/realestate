@@ -29,6 +29,14 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Vue Single File Component" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -167,7 +175,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1606832548567</updated>
-      <workItem from="1606832549867" duration="4469000" />
+      <workItem from="1606832549867" duration="8013000" />
     </task>
     <servers />
   </component>
@@ -184,5 +192,15 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2160" y="443" key="NewPhpFileDialog" timestamp="1606839933593">
+      <screen x="1366" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2160" y="443" key="NewPhpFileDialog/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606839933593" />
+    <state x="1982" y="240" key="run.anything.popup" timestamp="1606841276221">
+      <screen x="1366" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1982" y="240" key="run.anything.popup/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606841276221" />
   </component>
 </project>
