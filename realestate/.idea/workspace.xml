@@ -175,7 +175,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1606832548567</updated>
-      <workItem from="1606832549867" duration="18262000" />
+      <workItem from="1606832549867" duration="41694000" />
     </task>
     <servers />
   </component>
@@ -198,9 +198,13 @@
       <screen x="1366" y="0" width="1920" height="1040" />
     </state>
     <state x="2160" y="443" key="NewPhpFileDialog/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606839933593" />
-    <state x="1982" y="240" key="run.anything.popup" timestamp="1606841276221">
+    <state x="1982" y="240" key="run.anything.popup" timestamp="1606928260025">
       <screen x="1366" y="0" width="1920" height="1040" />
     </state>
-    <state x="1982" y="240" key="run.anything.popup/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606841276221" />
+    <state x="1982" y="240" key="run.anything.popup/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606928260025" />
+    <state x="1989" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1606912478172">
+      <screen x="1366" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1989" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606912478172" />
   </component>
 </project>
