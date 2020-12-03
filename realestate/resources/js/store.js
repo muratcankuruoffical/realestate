@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -28,11 +27,10 @@ const store = new Vuex.Store({
         },
         login({commit, dispatch, state}, data){
             console.log(data)
-            return axios.post("http://127.0.0.1:8000/api/login", data)
+            return axios.post("http://127.0.0.1:8000/api/auth/login", data)
                 .then(response => {
-                    commit('setToken', response.data.token)
-                    localStorage.setItem("token", response.data.token)
-                    console.log(response.data)
+                    commit('setToken', response.data.access_token)
+                    localStorage.setItem("token", response.data.access_token)
                 })
         },
         logout({commit, dispatch, state}){

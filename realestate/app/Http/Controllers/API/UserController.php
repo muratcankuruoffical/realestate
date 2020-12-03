@@ -15,14 +15,10 @@ class UserController extends Controller
     //
     public function login(Request $request) {
         $credentials = $request->only('email', 'password');
-        try {
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid creadentials'], 400);
-            }
-        }catch (JWTException $e) {
-            return response()->json(['error' => 'could not create token'], 500);
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'invalid creadentials'], 400);
         }
-        return response()->json(compact('token'));
+        return $this->createNewToken($token);
     }
     public function register(Request $request) {
         $validator = Validator::make($request->all(),[
@@ -47,6 +43,14 @@ class UserController extends Controller
         auth()->logout();
         return response()->json(['message' => 'user successfully logged']);
 
+    }
+    protected function createNewToken($token){
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()
+        ]);
     }
 
 

@@ -20,6 +20,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "bootstrap": "^4.5.3",
+        "bootstrap-vue": "^2.20.1",
         "luxon": "^1.25.0",
         "vue": "^2.6.12",
         "vue-browser-geolocation": "^1.8.0",

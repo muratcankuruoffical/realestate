@@ -30,7 +30,8 @@ export default {
     },
     data() {
         return {
-            user : {}
+            user : {},
+            message : {}
         }
     },
     methods : {

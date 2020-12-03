@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     //
-    protected $fillable = ['appointmentAdress', 'appointmentDate', 'appointmentAddressDistance', 'customerFullName', 'customerEmail', 'customerPhoneNumber'];
+    protected $fillable = ['appointmentAddress', 'appointmentDate', 'appointmentAddressDistance', 'customerFullName', 'customerEmail', 'customerPhoneNumber', 'estimatedTimeOfArrival'];
 }

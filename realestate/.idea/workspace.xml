@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -175,7 +178,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1606832548567</updated>
-      <workItem from="1606832549867" duration="44822000" />
+      <workItem from="1606832549867" duration="70725000" />
     </task>
     <servers />
   </component>
@@ -194,6 +197,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
+    <state x="2056" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1606994261599">
+      <screen x="1366" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2056" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606994261599" />
     <state x="2160" y="443" key="NewPhpFileDialog" timestamp="1606839933593">
       <screen x="1366" y="0" width="1920" height="1040" />
     </state>
@@ -202,9 +209,9 @@
       <screen x="1366" y="0" width="1920" height="1040" />
     </state>
     <state x="1982" y="240" key="run.anything.popup/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606928260025" />
-    <state x="1989" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1606912478172">
+    <state x="1989" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1606994784640">
       <screen x="1366" y="0" width="1920" height="1040" />
     </state>
-    <state x="1989" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606912478172" />
+    <state x="1989" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1606994784640" />
   </component>
 </project>

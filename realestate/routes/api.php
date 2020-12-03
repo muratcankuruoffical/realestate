@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register', [\App\Http\Controllers\API\UserController::class, 'register']);
-Route::post('login', [\App\Http\Controllers\API\UserController::class, 'login']);
-Route::get('logout', [\App\Http\Controllers\API\UserController::class, 'logout']);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('/register', [\App\Http\Controllers\API\UserController::class, 'register']);
+    Route::post('/login', [\App\Http\Controllers\API\UserController::class, 'login']);
+    Route::get('/logout', [\App\Http\Controllers\API\UserController::class, 'logout']);
+    Route::post('/appointment/add', [\App\Http\Controllers\API\AppointmentController::class, 'addAppointment']);
+    Route::get('/appointment/list', [\App\Http\Controllers\API\AppointmentController::class, 'getAppointments']);
+    Route::get('/appointment/get/{id}', [\App\Http\Controllers\API\AppointmentController::class, 'getAppointment']);
+    Route::post('/appointment/{id}/update', [\App\Http\Controllers\API\AppointmentController::class, 'updateAppointment']);
+});

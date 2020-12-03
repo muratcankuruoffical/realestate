@@ -2,14 +2,14 @@
     <div>
         <div class="row">
             <div class="col-md-6 border">
-                <form v-on:submit.prevent="">
+                <form v-on:submit.prevent="addAppointment">
                     <div class="form-group">
                         <label for="randevuadresi">Randevu Adresi</label>
-                        <input type="text" class="form-control" id="randevuadresi" v-model:value="address">
+                        <input type="text" class="form-control" id="randevuadresi" v-model:value="appointment.appointmentAddress" v-model="appointment.appointmentAddress">
                     </div>
                     <div class="form-group">
-                        <label for="tarih">Tarih</label>
-                        <Datetime v-model="date" id="tarih"></Datetime>
+                        <input type="date" class="form-control" v-model="date">
+                        <input type="time" class="form-control" v-model="time">
                     </div>
                     <div class="text-center">
                         <h2 class="text-muted">Müşteri Bilgileri</h2>
@@ -17,22 +17,21 @@
                     <hr>
                     <div class="form-group">
                         <label for="isimsoyisim">İsim Soyisim</label>
-                        <input type="text" class="form-control" id="isimsoyisim">
+                        <input type="text" class="form-control" id="isimsoyisim" v-model="appointment.customerFullName">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email">
+                        <input type="text" class="form-control" id="email" v-model="appointment.customerEmail">
                     </div>
                     <div class="form-group">
                         <label for="telefon">Telefon</label>
-                        <input type="text" class="form-control" id="telefon">
+                        <input type="number" class="form-control" id="telefon" v-model="appointment.customerPhoneNumber">
                     </div>
                     <div class="text-center">
                         <button class="btn btn-primary">Kaydet</button>
                     </div>
-                    <p>{{ this.myCordinates }}</p>
                 </form>
-                <button @click="test">Clickle</button>
+                <p>{{ this.appointment }}</p>
             </div>
             <div class="col-md-3">
                 <div id="map" style="width:350px; height: 350px;"></div>
@@ -53,11 +52,21 @@ export default {
       return {
           map : null,
           date : "",
+          time : "",
           postcode : "",
           address : "",
           myCordinates : {},
           cordinates : {lat: 51.729157, lng: 0.478027},
-          cordinates2 : {lat: 51.748834, lng: 0.482306}
+          cordinates2 : {lat: 51.748834, lng: 0.482306},
+          appointment : {
+              appointmentAddress : "",
+              appointmentDate : "",
+              appointmentAddressDistance : "",
+              customerFullName : "",
+              customerEmail : "",
+              customerPhoneNumber : null,
+              estimatedTimeOfArrival : ""
+          },
       }
     },
     components : {
@@ -65,9 +74,18 @@ export default {
         Datetime
     },
     methods : {
-        test() {
-            this.cordinates2 = {lat: 51.748834, lng: 0.482306}
+        addAppointment() {
+            this.appointment.appointmentDate = new Date(this.date +' '+ this.time).toLocaleString();
+            console.log(this.appointment)
+            axios.post("http://127.0.0.1:8000/api/auth/appointment/add", this.appointment, {
+                headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + this.$store.state.token}
+            })
+            .then(response => {
+                this.$router.push({ name : 'randevu_list' })
+                console.log(response.data)
+            })
         },
+        /*
         getOffice() {
             axios.get("https://api.postcodes.io/postcodes/" + this.postcode)
             .then((response) => {
@@ -75,6 +93,7 @@ export default {
                 console.log(this.myCordinates)
             });
         },
+        */
         initMap: function () {
             this.map = new google.maps.Map(document.querySelector("#map"), {
                 center: this.cordinates,
@@ -105,7 +124,7 @@ export default {
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location : position }, (results, status) => {
                 if  (status == "OK") {
-                    this.address = results[0].formatted_address;
+                    this.appointment.appointmentAddress = results[0].formatted_address;
                     console.log(results[0].formatted_address);
                 }
             })
@@ -122,17 +141,14 @@ export default {
 
             }, function (response, status) {
                 console.log(response)
-                console.log("Distance : "+ response.rows[0].elements[0].distance.text)
-                //this.address = response.destinationAddress
-                //console.log(response.originAddresses)
-            })
+                this.appointment.appointmentAddressDistance = response.rows[0].elements[0].distance.text
+                this.appointment.estimatedTimeOfArrival = response.rows[0].elements[0].duration.text
+            }.bind(this));
         }
     },
 
     mounted() {
         this.initMap();
-        //this.getDistance();
-        //this.setMarker(this.cordinates2, "B")
     },
     computed : {
     }

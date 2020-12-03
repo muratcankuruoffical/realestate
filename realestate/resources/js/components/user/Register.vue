@@ -43,7 +43,7 @@ export default {
     },
     methods : {
         setData() {
-            axios.post("http://127.0.0.1:8000/api/register", this.user)
+            axios.post("http://127.0.0.1:8000/api/auth/register", this.user)
             .then(response => (
                 console.log(response.data)
             ))

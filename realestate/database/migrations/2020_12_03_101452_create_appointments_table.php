@@ -18,11 +18,12 @@ class CreateAppointmentsTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->string('appointmentAddress');
-            $table->dateTime('appointmentDate');
+            $table->string('appointmentDate');
             $table->string('appointmentAddressDistance');
             $table->string('customerFullName');
             $table->string('customerEmail');
-            $table->mediumInteger('customerPhoneNumber');
+            $table->bigInteger('customerPhoneNumber');
+            $table->string('estimatedTimeOfArrival');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

@@ -2097,7 +2097,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -2109,6 +2108,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       map: null,
       date: "",
+      time: "",
       postcode: "",
       address: "",
       myCordinates: {},
@@ -2119,6 +2119,15 @@ __webpack_require__.r(__webpack_exports__);
       cordinates2: {
         lat: 51.748834,
         lng: 0.482306
+      },
+      appointment: {
+        appointmentAddress: "",
+        appointmentDate: "",
+        appointmentAddressDistance: "",
+        customerFullName: "",
+        customerEmail: "",
+        customerPhoneNumber: null,
+        estimatedTimeOfArrival: ""
       }
     };
   },
@@ -2127,21 +2136,194 @@ __webpack_require__.r(__webpack_exports__);
     Datetime: vue_datetime__WEBPACK_IMPORTED_MODULE_1__["Datetime"]
   },
   methods: {
-    test: function test() {
-      this.cordinates2 = {
-        lat: 51.748834,
-        lng: 0.482306
-      };
-    },
-    getOffice: function getOffice() {
+    addAppointment: function addAppointment() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_4___default.a.get("https://api.postcodes.io/postcodes/" + this.postcode).then(function (response) {
-        _this.cordinates2 = {
-          lat: response.data.result.latitude,
-          lng: response.data.result.longitude
-        };
-        console.log(_this.myCordinates);
+      this.appointment.appointmentDate = new Date(this.date + ' ' + this.time).toLocaleString();
+      console.log(this.appointment);
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.post("http://127.0.0.1:8000/api/auth/appointment/add", this.appointment, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.state.token
+        }
+      }).then(function (response) {
+        _this.$router.push({
+          name: 'randevu_list'
+        });
+
+        console.log(response.data);
+      });
+    },
+
+    /*
+    getOffice() {
+        axios.get("https://api.postcodes.io/postcodes/" + this.postcode)
+        .then((response) => {
+            this.cordinates2 = {lat: response.data.result.latitude,lng: response.data.result.longitude}
+            console.log(this.myCordinates)
+        });
+    },
+    */
+    initMap: function initMap() {
+      this.map = new google.maps.Map(document.querySelector("#map"), {
+        center: this.cordinates,
+        zoom: 12
+      });
+      this.setMarker(this.cordinates, "A");
+      google.maps.event.addListener(this.map, 'click', function (e) {
+        this.setMarker(e.latLng, "B");
+        this.getAddress(e.latLng);
+        this.getDistance(e.latLng);
+        console.log(e.latLng);
+      }.bind(this));
+    },
+    setMarker: function setMarker(Position, Label) {
+      var markers = new google.maps.Marker({
+        position: Position,
+        map: this.map,
+        draggable: true,
+        label: {
+          text: Label,
+          color: "#FFF"
+        }
+      });
+    },
+    getAddress: function getAddress(position) {
+      var _this2 = this;
+
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({
+        location: position
+      }, function (results, status) {
+        if (status == "OK") {
+          _this2.appointment.appointmentAddress = results[0].formatted_address;
+          console.log(results[0].formatted_address);
+        }
+      });
+    },
+    getDistance: function getDistance(position) {
+      var service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix({
+        origins: [this.cordinates],
+        destinations: [position],
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC,
+        avoidHighways: false,
+        avoidTolls: false
+      }, function (response, status) {
+        console.log(response);
+        this.appointment.appointmentAddressDistance = response.rows[0].elements[0].distance.text;
+        this.appointment.estimatedTimeOfArrival = response.rows[0].elements[0].duration.text;
+      }.bind(this));
+    }
+  },
+  mounted: function mounted() {
+    this.initMap();
+  },
+  computed: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/randevu/Edit.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/randevu/Edit.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "edit",
+  created: function created() {
+    this.getAppointment();
+  },
+  data: function data() {
+    return {
+      map: null,
+      time: "",
+      date: "",
+      postcode: "",
+      address: "",
+      myCordinates: {},
+      cordinates: {
+        lat: 51.729157,
+        lng: 0.478027
+      },
+      cordinates2: {
+        lat: 51.748834,
+        lng: 0.482306
+      },
+      appointment: {}
+    };
+  },
+  methods: {
+    test: function test() {
+      //this.appointment.appointmentDate = new Date(this.date +' '+ this.time).toLocaleString();
+      console.log(this.appointment);
+    },
+    updateAppointment: function updateAppointment() {
+      var _this = this;
+
+      this.appointment.appointmentDate = new Date(this.date + ' ' + this.time).toLocaleString();
+      console.log(this.appointment.appointmentDate);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://127.0.0.1:8000/api/auth/appointment/" + this.$route.params.id + "/update", this.appointment, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.state.token
+        }
+      }).then(function (response) {
+        _this.$router.push({
+          name: 'randevu_list'
+        });
+
+        console.log(response.data);
       });
     },
     initMap: function initMap() {
@@ -2176,7 +2358,7 @@ __webpack_require__.r(__webpack_exports__);
         location: position
       }, function (results, status) {
         if (status == "OK") {
-          _this2.address = results[0].formatted_address;
+          _this2.appointment.appointmentAddress = results[0].formatted_address;
           console.log(results[0].formatted_address);
         }
       });
@@ -2192,16 +2374,31 @@ __webpack_require__.r(__webpack_exports__);
         avoidTolls: false
       }, function (response, status) {
         console.log(response);
-        console.log("Distance : " + response.rows[0].elements[0].distance.text); //this.address = response.destinationAddress
-        //console.log(response.originAddresses)
+        this.appointment.appointmentAddressDistance = response.rows[0].elements[0].distance.text;
+        this.appointment.estimatedTimeOfArrival = response.rows[0].elements[0].duration.text;
+      }.bind(this));
+    },
+    getAppointment: function getAppointment() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://127.0.0.1:8000/api/auth/appointment/get/" + this.$route.params.id, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.state.token
+        }
+      }).then(function (response) {
+        var date = response.data.appointment.appointmentDate.split(" "); //let time = date[1].split(":")
+
+        _this3.date = date[0];
+        _this3.time = date[1];
+        _this3.appointment = response.data.appointment;
+        console.log(response.data);
       });
     }
   },
   mounted: function mounted() {
-    this.initMap(); //this.getDistance();
-    //this.setMarker(this.cordinates2, "B")
-  },
-  computed: {}
+    this.initMap();
+  }
 });
 
 /***/ }),
@@ -2216,6 +2413,47 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Header */ "./resources/js/components/Header.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2223,10 +2461,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "list",
   components: {
     Header: _Header__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  created: function created() {
+    this.getAppoitments();
+    this.testDate();
+  },
+  data: function data() {
+    return {
+      appointments: {}
+    };
+  },
+  methods: {
+    getAppoitments: function getAppoitments() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("http://127.0.0.1:8000/api/auth/appointment/list", {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.state.token
+        }
+      }).then(function (response) {
+        _this.appointments = response.data.appointments;
+        console.log(response.data);
+        console.log(_this.appointments);
+      });
+    },
+    testDate: function testDate() {
+      var now = new Date();
+      var fulldate = now.toLocaleString(); //year+"-"+month+"-"+date+" "+hours+":"+minutes+":"+seconds
+
+      return fulldate;
+    }
   }
 });
 
@@ -2275,7 +2545,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      user: {}
+      user: {},
+      message: {}
     };
   },
   methods: {
@@ -2349,7 +2620,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setData: function setData() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("http://127.0.0.1:8000/api/register", this.user).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("http://127.0.0.1:8000/api/auth/register", this.user).then(function (response) {
         return console.log(response.data);
       });
     }
@@ -29009,17 +29280,6 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vue-browser-geolocation/dist/vue-geolocation.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/vue-browser-geolocation/dist/vue-geolocation.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-!function(o,t){ true?module.exports=t():undefined}(this,function(){return function(o){function t(n){if(e[n])return e[n].exports;var r=e[n]={i:n,l:!1,exports:{}};return o[n].call(r.exports,r,r.exports,t),r.l=!0,r.exports}var e={};return t.m=o,t.c=e,t.i=function(o){return o},t.d=function(o,e,n){t.o(o,e)||Object.defineProperty(o,e,{configurable:!1,enumerable:!0,get:n})},t.n=function(o){var e=o&&o.__esModule?function(){return o.default}:function(){return o};return t.d(e,"a",e),e},t.o=function(o,t){return Object.prototype.hasOwnProperty.call(o,t)},t.p="",t(t.s=0)}([function(o,t,e){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n={install:function(o){o.prototype.$getLocation=n.getLocation,o.prototype.$watchLocation=n.watchLocation,o.prototype.$clearLocationWatch=n.clearLocation},getLocation:function(){var o=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];return new Promise(function(e,r){if(t)return void r("reject forced for testing purposes");n._isAvailable()?window.navigator.geolocation.getCurrentPosition(function(o){e({lat:o.coords.latitude,lng:o.coords.longitude,altitude:o.coords.altitude,altitudeAccuracy:o.coords.altitudeAccuracy,accuracy:o.coords.accuracy})},function(){r("no position access")},o):r("no browser support")})},watchLocation:function(){var o=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];return new Promise(function(e,r){if(t)return void r("reject forced for testing purposes");n._isAvailable()?window.navigator.geolocation.watchPosition(function(o){e({lat:o.coords.latitude,lng:o.coords.longitude,altitude:o.coords.altitude,altitudeAccuracy:o.coords.altitudeAccuracy,accuracy:o.coords.accuracy,heading:o.coords.heading,speed:o.coords.speed})},function(){r("no position access")},o):r("no browser support")})},clearLocation:function(o){return new Promise(function(t,e){n._isAvailable()?o?t(window.navigator.geolocation.clearWatch(o)):e("please provide watchID"):e("no browser support")})},_isAvailable:function(){return"geolocation"in window.navigator}};t.default=n,"undefined"!=typeof window&&window.Vue&&window.Vue.use(n)}])});
-
-/***/ }),
-
 /***/ "./node_modules/vue-datetime/dist/vue-datetime.css":
 /*!*********************************************************!*\
   !*** ./node_modules/vue-datetime/dist/vue-datetime.css ***!
@@ -30263,7 +30523,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "col-md-3 border" },
+          { staticClass: "col-md-3 border", staticStyle: { height: "300px" } },
           [_vm._m(0), _vm._v(" "), _c("hr"), _vm._v(" "), _c("Sidebar")],
           1
         )
@@ -30487,6 +30747,7 @@ var render = function() {
             on: {
               submit: function($event) {
                 $event.preventDefault()
+                return _vm.addAppointment($event)
               }
             }
           },
@@ -30501,65 +30762,200 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model:value",
-                    value: _vm.address,
-                    expression: "address",
+                    value: _vm.appointment.appointmentAddress,
+                    expression: "appointment.appointmentAddress",
                     arg: "value"
+                  },
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.appointmentAddress,
+                    expression: "appointment.appointmentAddress"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: { type: "text", id: "randevuadresi" },
-                domProps: { value: _vm.address },
+                domProps: {
+                  value: _vm.appointment.appointmentAddress,
+                  value: _vm.appointment.appointmentAddress
+                },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.appointment,
+                        "appointmentAddress",
+                        $event.target.value
+                      )
+                    },
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.appointment,
+                        "appointmentAddress",
+                        $event.target.value
+                      )
+                    }
+                  ]
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.date,
+                    expression: "date"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "date" },
+                domProps: { value: _vm.date },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.address = $event.target.value
+                    _vm.date = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.time,
+                    expression: "time"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "time" },
+                domProps: { value: _vm.time },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.time = $event.target.value
                   }
                 }
               })
             ]),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "form-group" },
-              [
-                _c("label", { attrs: { for: "tarih" } }, [_vm._v("Tarih")]),
-                _vm._v(" "),
-                _c("Datetime", {
-                  attrs: { id: "tarih" },
-                  model: {
-                    value: _vm.date,
-                    callback: function($$v) {
-                      _vm.date = $$v
-                    },
-                    expression: "date"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
             _vm._m(0),
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
-            _vm._m(1),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "isimsoyisim" } }, [
+                _vm._v("İsim Soyisim")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.customerFullName,
+                    expression: "appointment.customerFullName"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", id: "isimsoyisim" },
+                domProps: { value: _vm.appointment.customerFullName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.appointment,
+                      "customerFullName",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _vm._m(2),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.customerEmail,
+                    expression: "appointment.customerEmail"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", id: "email" },
+                domProps: { value: _vm.appointment.customerEmail },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.appointment,
+                      "customerEmail",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _vm._m(3),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "telefon" } }, [_vm._v("Telefon")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.customerPhoneNumber,
+                    expression: "appointment.customerPhoneNumber"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "number", id: "telefon" },
+                domProps: { value: _vm.appointment.customerPhoneNumber },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.appointment,
+                      "customerPhoneNumber",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _vm._m(4),
-            _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(this.myCordinates))])
+            _vm._m(1)
           ]
         ),
         _vm._v(" "),
-        _c("button", { on: { click: _vm.test } }, [_vm._v("Clickle")])
+        _c("p", [_vm._v(_vm._s(this.appointment))])
       ]),
       _vm._v(" "),
-      _vm._m(5)
+      _vm._m(2)
     ])
   ])
 }
@@ -30576,39 +30972,269 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "isimsoyisim" } }, [_vm._v("İsim Soyisim")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", id: "isimsoyisim" }
-      })
+    return _c("div", { staticClass: "text-center" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Kaydet")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", id: "email" }
+    return _c("div", { staticClass: "col-md-3" }, [
+      _c("div", {
+        staticStyle: { width: "350px", height: "350px" },
+        attrs: { id: "map" }
       })
     ])
-  },
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/randevu/Edit.vue?vue&type=template&id=4093e165&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/randevu/Edit.vue?vue&type=template&id=4093e165&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6 border" }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.updateAppointment($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "randevuadresi" } }, [
+                _vm._v("Randevu Adresi")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model:value",
+                    value: _vm.appointment.appointmentAddress,
+                    expression: "appointment.appointmentAddress",
+                    arg: "value"
+                  },
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.appointmentAddress,
+                    expression: "appointment.appointmentAddress"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", id: "randevuadresi" },
+                domProps: {
+                  value: _vm.appointment.appointmentAddress,
+                  value: _vm.appointment.appointmentAddress
+                },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.appointment,
+                        "appointmentAddress",
+                        $event.target.value
+                      )
+                    },
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.appointment,
+                        "appointmentAddress",
+                        $event.target.value
+                      )
+                    }
+                  ]
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.date,
+                    expression: "date"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "date" },
+                domProps: { value: _vm.date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.date = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.time,
+                    expression: "time"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "time" },
+                domProps: { value: _vm.time },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.time = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "isimsoyisim" } }, [
+                _vm._v("İsim Soyisim")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.customerFullName,
+                    expression: "appointment.customerFullName"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", id: "isimsoyisim" },
+                domProps: { value: _vm.appointment.customerFullName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.appointment,
+                      "customerFullName",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.customerEmail,
+                    expression: "appointment.customerEmail"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", id: "email" },
+                domProps: { value: _vm.appointment.customerEmail },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.appointment,
+                      "customerEmail",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "telefon" } }, [_vm._v("Telefon")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.appointment.customerPhoneNumber,
+                    expression: "appointment.customerPhoneNumber"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "number", id: "telefon" },
+                domProps: { value: _vm.appointment.customerPhoneNumber },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.appointment,
+                      "customerPhoneNumber",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(2)
+    ])
+  ])
+}
+var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "telefon" } }, [_vm._v("Telefon")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", id: "telefon" }
-      })
+    return _c("div", { staticClass: "text-center" }, [
+      _c("h2", { staticClass: "text-muted" }, [_vm._v("Müşteri Bilgileri")])
     ])
   },
   function() {
@@ -30652,9 +31278,112 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("Header")], 1)
+  return _c("div", { staticStyle: { "margin-top": "300px" } }, [
+    _vm.appointments.length > 0
+      ? _c("table", { staticClass: "table table-bordered" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.appointments, function(appointment) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(appointment.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(appointment.appointmentAddress))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(_vm._s(appointment.appointmentAddressDistance))
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(appointment.estimatedTimeOfArrival))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(appointment.appointmentDate))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(appointment.customerFullName))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(appointment.customerEmail))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(appointment.customerPhoneNumber))]),
+                _vm._v(" "),
+                _vm.testDate() > appointment.appointmentDate
+                  ? _c("td", [
+                      _c("span", { staticClass: "badge badge-danger" }, [
+                        _vm._v("expired")
+                      ])
+                    ])
+                  : _c("td", [
+                      _c("span", { staticClass: "badge badge-success" }, [
+                        _vm._v("not expired")
+                      ])
+                    ]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: {
+                          to: {
+                            name: "randevu_edit",
+                            params: {
+                              id: appointment.id,
+                              appointment: appointment
+                            }
+                          }
+                        }
+                      },
+                      [_vm._v("Edit")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            }),
+            0
+          )
+        ])
+      : _c(
+          "div",
+          {
+            staticClass: "text-center alert alert-warning",
+            attrs: { role: "alert" }
+          },
+          [_vm._v("\n        Data not found!\n    ")]
+        )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("tr", [
+        _c("th", [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Address")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Distance")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Estimated Time Of Arrival")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Customer Full Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Customer Email")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Customer Phone Number")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -50551,14 +51280,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
-/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js");
-/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_datetime__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-datetime/dist/vue-datetime.css */ "./node_modules/vue-datetime/dist/vue-datetime.css");
-/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vue_browser_geolocation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-browser-geolocation */ "./node_modules/vue-browser-geolocation/dist/vue-geolocation.js");
-/* harmony import */ var vue_browser_geolocation__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vue_browser_geolocation__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue2-google-maps */ "./node_modules/vue2-google-maps/dist/main.js");
-/* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(vue2_google_maps__WEBPACK_IMPORTED_MODULE_8__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -50566,18 +51287,6 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-
-
-
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = true;
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_browser_geolocation__WEBPACK_IMPORTED_MODULE_7___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_8__, {
-  load: {
-    key: "AIzaSyAt8RMPg30TxSbHLwKPSOQqXa9LQpds9bM"
-  }
-});
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_datetime__WEBPACK_IMPORTED_MODULE_5__["Datetime"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mode: 'history',
@@ -50836,6 +51545,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/randevu/Edit.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/randevu/Edit.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Edit_vue_vue_type_template_id_4093e165_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Edit.vue?vue&type=template&id=4093e165&scoped=true& */ "./resources/js/components/randevu/Edit.vue?vue&type=template&id=4093e165&scoped=true&");
+/* harmony import */ var _Edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Edit.vue?vue&type=script&lang=js& */ "./resources/js/components/randevu/Edit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Edit_vue_vue_type_template_id_4093e165_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Edit_vue_vue_type_template_id_4093e165_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "4093e165",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/randevu/Edit.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/randevu/Edit.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/randevu/Edit.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/randevu/Edit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/randevu/Edit.vue?vue&type=template&id=4093e165&scoped=true&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/randevu/Edit.vue?vue&type=template&id=4093e165&scoped=true& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_template_id_4093e165_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Edit.vue?vue&type=template&id=4093e165&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/randevu/Edit.vue?vue&type=template&id=4093e165&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_template_id_4093e165_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_template_id_4093e165_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/randevu/List.vue":
 /*!**************************************************!*\
   !*** ./resources/js/components/randevu/List.vue ***!
@@ -51058,6 +51836,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_user_Register__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/user/Register */ "./resources/js/components/user/Register.vue");
 /* harmony import */ var _components_randevu_List__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/randevu/List */ "./resources/js/components/randevu/List.vue");
 /* harmony import */ var _components_randevu_Add__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/randevu/Add */ "./resources/js/components/randevu/Add.vue");
+/* harmony import */ var _components_randevu_Edit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/randevu/Edit */ "./resources/js/components/randevu/Edit.vue");
+
 
 
 
@@ -51083,6 +51863,10 @@ var routes = [{
   name: 'randevu_add',
   path: '/randevu/add',
   component: _components_randevu_Add__WEBPACK_IMPORTED_MODULE_4__["default"]
+}, {
+  name: 'randevu_edit',
+  path: '/randevu/edit/:id',
+  component: _components_randevu_Edit__WEBPACK_IMPORTED_MODULE_5__["default"]
 }];
 
 /***/ }),
@@ -51134,10 +51918,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           dispatch = _ref2.dispatch,
           state = _ref2.state;
       console.log(data);
-      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://127.0.0.1:8000/api/login", data).then(function (response) {
-        commit('setToken', response.data.token);
-        localStorage.setItem("token", response.data.token);
-        console.log(response.data);
+      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://127.0.0.1:8000/api/auth/login", data).then(function (response) {
+        commit('setToken', response.data.access_token);
+        localStorage.setItem("token", response.data.access_token);
       });
     },
     logout: function logout(_ref3) {

@@ -5,7 +5,7 @@
             <div class="col-md-9">
                 <router-view></router-view>
             </div>
-            <div class="col-md-3 border">
+            <div class="col-md-3 border" style="height: 300px;">
                 <div class="text-center">
                     <h2 class="text-muted">Sidebar</h2>
                 </div>
