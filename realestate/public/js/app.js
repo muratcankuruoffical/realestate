@@ -2153,6 +2153,7 @@ __webpack_require__.r(__webpack_exports__);
       google.maps.event.addListener(this.map, 'click', function (e) {
         this.setMarker(e.latLng, "B");
         this.getAddress(e.latLng);
+        this.getDistance(e.latLng);
         console.log(e.latLng);
       }.bind(this));
     },
@@ -2166,29 +2167,39 @@ __webpack_require__.r(__webpack_exports__);
           color: "#FFF"
         }
       });
-      /*
-      google.maps.event.addListener(this.map, 'click', function (e) {
-          markers.position = e.latLng;
-          console.log(markers.position)
-      })
-      */
     },
-    getAddress: function getAddress(Position) {
+    getAddress: function getAddress(position) {
       var _this2 = this;
 
       var geocoder = new google.maps.Geocoder();
       geocoder.geocode({
-        location: this.cordinates
+        location: position
       }, function (results, status) {
         if (status == "OK") {
           _this2.address = results[0].formatted_address;
           console.log(results[0].formatted_address);
         }
       });
+    },
+    getDistance: function getDistance(position) {
+      var service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix({
+        origins: [this.cordinates],
+        destinations: [position],
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC,
+        avoidHighways: false,
+        avoidTolls: false
+      }, function (response, status) {
+        console.log(response);
+        console.log("Distance : " + response.rows[0].elements[0].distance.text); //this.address = response.destinationAddress
+        //console.log(response.originAddresses)
+      });
     }
   },
   mounted: function mounted() {
-    this.initMap(); //this.setMarker(this.cordinates2, "B")
+    this.initMap(); //this.getDistance();
+    //this.setMarker(this.cordinates2, "B")
   },
   computed: {}
 });

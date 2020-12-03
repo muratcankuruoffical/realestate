@@ -79,12 +79,12 @@ export default {
             this.map = new google.maps.Map(document.querySelector("#map"), {
                 center: this.cordinates,
                 zoom: 12,
-
             })
             this.setMarker(this.cordinates, "A")
             google.maps.event.addListener(this.map, 'click', function (e) {
                 this.setMarker(e.latLng, "B")
                 this.getAddress(e.latLng)
+                this.getDistance(e.latLng)
                 console.log(e.latLng)
 
             }.bind(this));
@@ -100,26 +100,38 @@ export default {
                     color:"#FFF"
                 }
             })
-            /*
-            google.maps.event.addListener(this.map, 'click', function (e) {
-                markers.position = e.latLng;
-                console.log(markers.position)
-            })
-            */
         },
-        getAddress(Position) {
+        getAddress(position) {
             const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ location : this.cordinates }, (results, status) => {
+            geocoder.geocode({ location : position }, (results, status) => {
                 if  (status == "OK") {
                     this.address = results[0].formatted_address;
                     console.log(results[0].formatted_address);
                 }
+            })
+        },
+        getDistance(position){
+            const service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [this.cordinates],
+                destinations: [position],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+
+            }, function (response, status) {
+                console.log(response)
+                console.log("Distance : "+ response.rows[0].elements[0].distance.text)
+                //this.address = response.destinationAddress
+                //console.log(response.originAddresses)
             })
         }
     },
 
     mounted() {
         this.initMap();
+        //this.getDistance();
         //this.setMarker(this.cordinates2, "B")
     },
     computed : {
