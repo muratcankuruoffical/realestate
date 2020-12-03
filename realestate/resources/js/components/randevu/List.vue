@@ -1,6 +1,6 @@
 <template>
-    <div style="margin-top: 300px;">
-        <table class="table table-bordered" v-if="appointments.length > 0">
+    <div>
+        <table class="table table-bordered table-sm" v-if="appointments.length > 0">
             <thead class="thead-dark">
                 <tr>
                     <th>#</th>

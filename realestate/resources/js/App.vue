@@ -2,10 +2,10 @@
     <div class="container">
         <Header></Header>
         <div class="row mt-4">
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <router-view></router-view>
             </div>
-            <div class="col-md-3 border" style="height: 300px;">
+            <div class="col-md-2 border" style="height: 300px;">
                 <div class="text-center">
                     <h2 class="text-muted">Sidebar</h2>
                 </div>

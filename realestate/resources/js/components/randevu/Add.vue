@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6 border">
+            <div class="col-md-7 border">
                 <form v-on:submit.prevent="addAppointment">
                     <div class="form-group">
                         <label for="randevuadresi">Randevu Adresi</label>
@@ -31,7 +31,6 @@
                         <button class="btn btn-primary">Kaydet</button>
                     </div>
                 </form>
-                <p>{{ this.appointment }}</p>
             </div>
             <div class="col-md-3">
                 <div id="map" style="width:350px; height: 350px;"></div>

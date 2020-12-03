@@ -2096,7 +2096,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -30523,11 +30522,11 @@ var render = function() {
       _c("Header"),
       _vm._v(" "),
       _c("div", { staticClass: "row mt-4" }, [
-        _c("div", { staticClass: "col-md-9" }, [_c("router-view")], 1),
+        _c("div", { staticClass: "col-md-10" }, [_c("router-view")], 1),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "col-md-3 border", staticStyle: { height: "300px" } },
+          { staticClass: "col-md-2 border", staticStyle: { height: "300px" } },
           [_vm._m(0), _vm._v(" "), _c("hr"), _vm._v(" "), _c("Sidebar")],
           1
         )
@@ -30744,7 +30743,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6 border" }, [
+      _c("div", { staticClass: "col-md-7 border" }, [
         _c(
           "form",
           {
@@ -30954,9 +30953,7 @@ var render = function() {
             _vm._v(" "),
             _vm._m(1)
           ]
-        ),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(this.appointment))])
+        )
       ]),
       _vm._v(" "),
       _vm._m(2)
@@ -31282,9 +31279,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticStyle: { "margin-top": "300px" } }, [
+  return _c("div", [
     _vm.appointments.length > 0
-      ? _c("table", { staticClass: "table table-bordered" }, [
+      ? _c("table", { staticClass: "table table-bordered table-sm" }, [
           _vm._m(0),
           _vm._v(" "),
           _c(
