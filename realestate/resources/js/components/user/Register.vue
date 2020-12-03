@@ -43,10 +43,10 @@ export default {
     },
     methods : {
         setData() {
-            axios.post("http://127.0.0.1:8000/api/auth/register", this.user)
-            .then(response => (
-                console.log(response.data)
-            ))
+            this.$store.dispatch("register", this.user)
+                .then(response => {
+                    this.$router.push({ name : 'login' })
+                })
         }
     }
 }

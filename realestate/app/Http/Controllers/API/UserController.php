@@ -13,8 +13,20 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class UserController extends Controller
 {
     //
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+
     public function login(Request $request) {
         $credentials = $request->only('email', 'password');
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'invalid creadentials'], 400);
         }
@@ -35,13 +47,12 @@ class UserController extends Controller
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
         ]);
-        $token = JWTAuth::fromUser($user);
-        return response()->json(compact('user','token'),201);
+        return response()->json(['message' => 'User successfully registered', 'user' => $user], 201);
     }
 
     public function logout() {
         auth()->logout();
-        return response()->json(['message' => 'user successfully logged']);
+        return response()->json(['message' => 'User successfully signed out']);
 
     }
     protected function createNewToken($token){

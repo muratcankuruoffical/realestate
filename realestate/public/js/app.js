@@ -2620,8 +2620,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setData: function setData() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("http://127.0.0.1:8000/api/auth/register", this.user).then(function (response) {
-        return console.log(response.data);
+      var _this = this;
+
+      this.$store.dispatch("register", this.user).then(function (response) {
+        _this.$router.push({
+          name: 'login'
+        });
       });
     }
   }
@@ -51885,6 +51889,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+
 
 
 
@@ -51917,16 +51923,33 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       var commit = _ref2.commit,
           dispatch = _ref2.dispatch,
           state = _ref2.state;
-      console.log(data);
       return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://127.0.0.1:8000/api/auth/login", data).then(function (response) {
         commit('setToken', response.data.access_token);
         localStorage.setItem("token", response.data.access_token);
       });
     },
-    logout: function logout(_ref3) {
+    register: function register(_ref3, data) {
       var commit = _ref3.commit,
           dispatch = _ref3.dispatch,
           state = _ref3.state;
+      return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://127.0.0.1:8000/api/auth/register", data).then(function (response) {
+        commit('setToken', response.data.access_token);
+        localStorage.setItem("token", response.data.access_token);
+      });
+    },
+    logout: function logout(_ref4) {
+      var commit = _ref4.commit,
+          dispatch = _ref4.dispatch,
+          state = _ref4.state;
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("http://127.0.0.1:8000/api/auth/logout", {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + state.token
+        }
+      }).then(function (response) {
+        console.log(response.data);
+        _routes__WEBPACK_IMPORTED_MODULE_3__["routes"].push("/");
+      });
       commit('clearToken');
       localStorage.removeItem("token");
     }
