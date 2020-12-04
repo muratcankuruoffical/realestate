@@ -41,11 +41,18 @@ const store = new Vuex.Store({
                     localStorage.setItem("token", response.data.access_token)
                 })
         },
+        refresh({commit, dispatch, state}){
+            axios.get("http://127.0.0.1:8000/api/auth/refresh", {
+                headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + state.token}
+            }).then(response => {
+                commit('setToken', response.data.access_token)
+                console.log(response.data)
+            });
+        },
         logout({commit, dispatch, state}){
             axios.get("http://127.0.0.1:8000/api/auth/logout",{
                 headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + state.token}
             }).then(response => {
-                console.log(response.data)
                 routes.push("/")
             })
             commit('clearToken')

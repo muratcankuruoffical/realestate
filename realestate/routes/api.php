@@ -20,6 +20,7 @@ Route::group([
 ], function ($router) {
     Route::post('/register', [\App\Http\Controllers\API\UserController::class, 'register']);
     Route::post('/login', [\App\Http\Controllers\API\UserController::class, 'login']);
+    Route::get('/refresh', [\App\Http\Controllers\API\UserController::class, 'refresh']);
     Route::get('/logout', [\App\Http\Controllers\API\UserController::class, 'logout']);
     Route::post('/appointment/add', [\App\Http\Controllers\API\AppointmentController::class, 'addAppointment']);
     Route::get('/appointment/list', [\App\Http\Controllers\API\AppointmentController::class, 'getAppointments']);

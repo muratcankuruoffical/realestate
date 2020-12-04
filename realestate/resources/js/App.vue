@@ -23,11 +23,18 @@ export default{
     name: "App",
     created() {
         this.$store.dispatch('initAuth')
+        setInterval(function(){
+            if (this.$store.state.token) {
+                this.$store.dispatch('refresh')
+            }
+        }.bind(this), 3000);
+
+
     },
     components : {
         Header,
         Sidebar
-    }
+    },
 }
 </script>
 

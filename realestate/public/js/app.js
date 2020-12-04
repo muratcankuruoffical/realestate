@@ -1934,6 +1934,11 @@ __webpack_require__.r(__webpack_exports__);
   name: "App",
   created: function created() {
     this.$store.dispatch('initAuth');
+    setInterval(function () {
+      if (this.$store.state.token) {
+        this.$store.dispatch('refresh');
+      }
+    }.bind(this), 3000);
   },
   components: {
     Header: _components_Header__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -51934,17 +51939,30 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         localStorage.setItem("token", response.data.access_token);
       });
     },
-    logout: function logout(_ref4) {
+    refresh: function refresh(_ref4) {
       var commit = _ref4.commit,
           dispatch = _ref4.dispatch,
           state = _ref4.state;
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("http://127.0.0.1:8000/api/auth/refresh", {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + state.token
+        }
+      }).then(function (response) {
+        commit('setToken', response.data.access_token);
+        console.log(response.data);
+      });
+    },
+    logout: function logout(_ref5) {
+      var commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          state = _ref5.state;
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("http://127.0.0.1:8000/api/auth/logout", {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + state.token
         }
       }).then(function (response) {
-        console.log(response.data);
         _routes__WEBPACK_IMPORTED_MODULE_3__["routes"].push("/");
       });
       commit('clearToken');
