@@ -30,6 +30,7 @@ const store = new Vuex.Store({
                     console.log(+expirationDate - time)
                     commit("setToken", token)
                     dispatch("setExprired", +expirationDate - time)
+                    dispatch("refresh")
                 }
 
             }else {

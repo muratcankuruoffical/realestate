@@ -1934,11 +1934,6 @@ __webpack_require__.r(__webpack_exports__);
   name: "App",
   created: function created() {
     this.$store.dispatch('initAuth');
-    setInterval(function () {
-      if (this.$store.state.token) {
-        this.$store.dispatch('refresh');
-      }
-    }.bind(this), 30000);
   },
   components: {
     Header: _components_Header__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -51928,6 +51923,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           console.log(+expirationDate - time);
           commit("setToken", token);
           dispatch("setExprired", +expirationDate - time);
+          dispatch("refresh");
         }
       } else {
         return false;
