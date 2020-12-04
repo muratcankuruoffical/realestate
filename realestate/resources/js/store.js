@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import {routes} from "./routes";
-
+import {router} from "./router";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -54,7 +53,7 @@ const store = new Vuex.Store({
             axios.get("http://127.0.0.1:8000/api/auth/logout",{
                 headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + state.token}
             }).then(response => {
-                routes.push("/")
+                router.push("/")
             })
             commit('clearToken')
             localStorage.removeItem("token")
