@@ -38,7 +38,7 @@ export const router = new VueRouter({
             component : Add
         },
         {
-            name : 'randevu_editim',
+            name : 'randevu_edit',
             path : '/randevu/edit/:id',
             component : Edit
         }

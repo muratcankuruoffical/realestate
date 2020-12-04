@@ -51871,7 +51871,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_7__["default"]({
     path: '/randevu/add',
     component: _components_randevu_Add__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
-    name: 'randevu_editim',
+    name: 'randevu_edit',
     path: '/randevu/edit/:id',
     component: _components_randevu_Edit__WEBPACK_IMPORTED_MODULE_5__["default"]
   }]
@@ -51918,7 +51918,17 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       var token = localStorage.getItem("token");
 
       if (token) {
-        commit("setToken", token);
+        var expirationDate = localStorage.getItem('expirationDate');
+        var time = new Date().getTime();
+
+        if (time >= +expirationDate) {
+          console.log("token süresi geçti");
+          dispatch("logout");
+        } else {
+          console.log(+expirationDate - time);
+          commit("setToken", token);
+          dispatch("setExprired", +expirationDate - time);
+        }
       } else {
         return false;
       }
@@ -51929,7 +51939,10 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           state = _ref2.state;
       return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://127.0.0.1:8000/api/auth/login", data).then(function (response) {
         commit('setToken', response.data.access_token);
-        localStorage.setItem("token", response.data.access_token);
+        localStorage.setItem("token", response.data.access_token); //* 1000
+
+        localStorage.setItem('expirationDate', new Date().getTime() + response.data.expires_in * 1000);
+        dispatch("setExprired", +response.data.expires_in * 1000);
       });
     },
     register: function register(_ref3, data) {
@@ -51970,6 +51983,13 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       });
       commit('clearToken');
       localStorage.removeItem("token");
+      localStorage.removeItem('expirationDate');
+    },
+    setExprired: function setExprired(_ref6, expiresIn) {
+      var dispatch = _ref6.dispatch;
+      setTimeout(function () {
+        dispatch("logout");
+      }, expiresIn);
     }
   },
   getters: {

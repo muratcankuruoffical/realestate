@@ -21,7 +21,17 @@ const store = new Vuex.Store({
         initAuth({commit, dispatch}){
             let token = localStorage.getItem("token");
             if (token) {
-                commit("setToken", token)
+                let expirationDate = localStorage.getItem('expirationDate');
+                let time = new Date().getTime();
+                if (time >= +expirationDate) {
+                    console.log("token süresi geçti")
+                    dispatch("logout")
+                }else {
+                    console.log(+expirationDate - time)
+                    commit("setToken", token)
+                    dispatch("setExprired", +expirationDate - time)
+                }
+
             }else {
                 return false
             }
@@ -31,6 +41,9 @@ const store = new Vuex.Store({
                 .then(response => {
                     commit('setToken', response.data.access_token)
                     localStorage.setItem("token", response.data.access_token)
+                    //* 1000
+                    localStorage.setItem('expirationDate', new Date().getTime() + response.data.expires_in * 1000)
+                    dispatch("setExprired", +response.data.expires_in * 1000)
                 })
         },
         register({commit, dispatch, state}, data){
@@ -57,6 +70,12 @@ const store = new Vuex.Store({
             })
             commit('clearToken')
             localStorage.removeItem("token")
+            localStorage.removeItem('expirationDate')
+        },
+        setExprired({dispatch}, expiresIn){
+            setTimeout(function () {
+                dispatch("logout")
+            }, expiresIn)
         }
     },
     getters : {
