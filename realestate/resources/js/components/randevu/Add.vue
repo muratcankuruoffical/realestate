@@ -76,7 +76,7 @@ export default {
         addAppointment() {
             this.appointment.appointmentDate = new Date(this.date +' '+ this.time).toLocaleString();
             console.log(this.appointment)
-            axios.post("http://127.0.0.1:8000/api/auth/appointment/add", this.appointment, {
+            axios.post("http://127.0.0.1:8000/api/appointment/add", this.appointment, {
                 headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + this.$store.state.token}
             })
             .then(response => {

@@ -27,7 +27,7 @@ export default{
             if (this.$store.state.token) {
                 this.$store.dispatch('refresh')
             }
-        }.bind(this), 3000);
+        }.bind(this), 30000);
 
 
     },

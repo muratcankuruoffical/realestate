@@ -1938,7 +1938,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.$store.state.token) {
         this.$store.dispatch('refresh');
       }
-    }.bind(this), 3000);
+    }.bind(this), 30000);
   },
   components: {
     Header: _components_Header__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -2145,7 +2145,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.appointment.appointmentDate = new Date(this.date + ' ' + this.time).toLocaleString();
       console.log(this.appointment);
-      axios__WEBPACK_IMPORTED_MODULE_4___default.a.post("http://127.0.0.1:8000/api/auth/appointment/add", this.appointment, {
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.post("http://127.0.0.1:8000/api/appointment/add", this.appointment, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + this.$store.state.token
@@ -2317,7 +2317,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.appointment.appointmentDate = new Date(this.date + ' ' + this.time).toLocaleString();
       console.log(this.appointment.appointmentDate);
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://127.0.0.1:8000/api/auth/appointment/" + this.$route.params.id + "/update", this.appointment, {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://127.0.0.1:8000/api/appointment/" + this.$route.params.id + "/update", this.appointment, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + this.$store.state.token
@@ -2385,7 +2385,7 @@ __webpack_require__.r(__webpack_exports__);
     getAppointment: function getAppointment() {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://127.0.0.1:8000/api/auth/appointment/get/" + this.$route.params.id, {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://127.0.0.1:8000/api/appointment/get/" + this.$route.params.id, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + this.$store.state.token
@@ -2484,7 +2484,7 @@ __webpack_require__.r(__webpack_exports__);
     getAppoitments: function getAppoitments() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("http://127.0.0.1:8000/api/auth/appointment/list", {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("http://127.0.0.1:8000/api/appointment/list", {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + this.$store.state.token
@@ -51950,6 +51950,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         }
       }).then(function (response) {
         commit('setToken', response.data.access_token);
+        localStorage.setItem("token", response.data.access_token);
         console.log(response.data);
       });
     },

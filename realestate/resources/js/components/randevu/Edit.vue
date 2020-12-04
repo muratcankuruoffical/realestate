@@ -68,7 +68,7 @@ export default {
         updateAppointment(){
             this.appointment.appointmentDate = new Date(this.date +' '+ this.time).toLocaleString();
             console.log(this.appointment.appointmentDate)
-            axios.post("http://127.0.0.1:8000/api/auth/appointment/"+this.$route.params.id+"/update", this.appointment, {
+            axios.post("http://127.0.0.1:8000/api/appointment/"+this.$route.params.id+"/update", this.appointment, {
                 headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + this.$store.state.token}
             })
                 .then(response => {
@@ -128,7 +128,7 @@ export default {
             }.bind(this));
         },
         getAppointment(){
-            axios.get("http://127.0.0.1:8000/api/auth/appointment/get/"+this.$route.params.id, {
+            axios.get("http://127.0.0.1:8000/api/appointment/get/"+this.$route.params.id, {
                 headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + this.$store.state.token}
             }).then(response => {
                 let date = response.data.appointment.appointmentDate.split(" ")

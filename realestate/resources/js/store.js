@@ -46,6 +46,7 @@ const store = new Vuex.Store({
                 headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + state.token}
             }).then(response => {
                 commit('setToken', response.data.access_token)
+                localStorage.setItem("token", response.data.access_token)
                 console.log(response.data)
             });
         },

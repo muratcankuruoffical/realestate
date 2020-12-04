@@ -62,7 +62,7 @@ export default {
     },
     methods : {
         getAppoitments() {
-            axios.get("http://127.0.0.1:8000/api/auth/appointment/list",{
+            axios.get("http://127.0.0.1:8000/api/appointment/list",{
                 headers : { 'Content-Type' : 'application/json', Authorization : 'Bearer ' + this.$store.state.token}
             }).then(response => {
                 this.appointments = response.data.appointments

@@ -22,8 +22,13 @@ Route::group([
     Route::post('/login', [\App\Http\Controllers\API\UserController::class, 'login']);
     Route::get('/refresh', [\App\Http\Controllers\API\UserController::class, 'refresh']);
     Route::get('/logout', [\App\Http\Controllers\API\UserController::class, 'logout']);
-    Route::post('/appointment/add', [\App\Http\Controllers\API\AppointmentController::class, 'addAppointment']);
-    Route::get('/appointment/list', [\App\Http\Controllers\API\AppointmentController::class, 'getAppointments']);
-    Route::get('/appointment/get/{id}', [\App\Http\Controllers\API\AppointmentController::class, 'getAppointment']);
-    Route::post('/appointment/{id}/update', [\App\Http\Controllers\API\AppointmentController::class, 'updateAppointment']);
+});
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'appointment'
+], function ($router) {
+    Route::post('/add', [\App\Http\Controllers\API\AppointmentController::class, 'addAppointment']);
+    Route::get('/list', [\App\Http\Controllers\API\AppointmentController::class, 'getAppointments']);
+    Route::get('/get/{id}', [\App\Http\Controllers\API\AppointmentController::class, 'getAppointment']);
+    Route::post('/{id}/update', [\App\Http\Controllers\API\AppointmentController::class, 'updateAppointment']);
 });
