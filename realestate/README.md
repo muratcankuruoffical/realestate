@@ -64,8 +64,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 git clone https://github.com/muratcankuruoffical/realestate.git
 
-Komut satırına "php artisan serve" komutunu uygulayın. Hata durumunda composer update ve composer dump-autoload çalıştırın.
-node komut satırında "npm run watch" çalıştırın. Hata durumunda npm install ile paketleri kurun.
+Komut satırına "php artisan serve" komutunu uygulayın. Hata durumunda composer update ve composer dump-autoload çalıştırın. Bu işlemlerden sonra .env dosyasının var olup,olmadığını kontrol edin.
+Node komut satırında "npm run watch" çalıştırın. Hata durumunda npm install ile paketleri kurun.
 Google map api script tagları ile çağırdığımdan bazı durumlarda eklentilerden ötürü dom'da görmüyor.
 Bu durumu yaşarsanız firefox örnek vermek gerekirse menü>yardım>eklentileri devre dışı bırakıp başlat seçeneğine tıklayınız.
 
