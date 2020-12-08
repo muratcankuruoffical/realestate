@@ -59,3 +59,14 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+#Kurulum
+
+git clone https://github.com/muratcankuruoffical/realestate.git
+
+Komut satırına "php artisan serve" komutunu uygulayın. Hata durumunda composer update ve composer dump-autoload çalıştırın.
+node komut satırında "npm run watch" çalıştırın. Hata durumunda npm install ile paketleri kurun.
+Google map api script tagları ile çağırdığımdan bazı durumlarda eklentilerden ötürü dom'da görmüyor.
+Bu durumu yaşarsanız firefox örnek vermek gerekirse menü>yardım>eklentileri devre dışı bırakıp başlat seçeneğine tıklayınız.
+
+
